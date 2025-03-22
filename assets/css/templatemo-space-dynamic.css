@@ -193,7 +193,7 @@ body {
 }
 
 .section-heading h2 span {
-  color: #fe3f40;
+  color: #766dfa;
 }
 
 .main-blue-button a {
@@ -1107,8 +1107,9 @@ Portfolio
 }
 
 .our-portfolio .hidden-content {
-  background: rgb(255,77,30);
-  background: linear-gradient(105deg, rgba(255,77,30,1) 0%, rgba(255,44,109,1) 100%);
+  background: #766dfa;
+  background: linear-gradient(105deg, #766DFA 0%, #766DFA 50%, #766DFA 75%, #4A90E2 100%);
+
   padding: 30px;
   border-radius: 20px;
   text-align: center;
@@ -1396,7 +1397,7 @@ form#contact textarea::placeholder {
 
 form#contact button {
   display: inline-block;
-  background-color: #03a4ed;
+  background-color: #766dfa;
   font-size: 15px;
   font-weight: 400;
   color: #fff;
