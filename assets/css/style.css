@@ -515,3 +515,6 @@ a.c-card:hover { transform: translateX(6px); box-shadow: inset 0 0 0 1.5px var(-
 .step-body .ml-sub { font-size: 1.05rem; margin-bottom: 12px; }
 .stat em { display: block; font-style: normal; font-size: .85rem; font-weight: 600; color: var(--violet-600); margin-top: 2px; }
 .c-card small [lang="ml"] { font-size: .85rem; font-weight: 700; }
+
+/* Shop link in navbar */
+.nav-links a.nav-shop { font-weight: 700; color: var(--violet-700); }
