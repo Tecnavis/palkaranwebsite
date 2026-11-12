@@ -40,6 +40,7 @@
   <a class="m-link" href="index.html">Home</a>
   <a class="m-link" href="about.html">About Us</a>
   <a class="m-link" href="https://shop.palkkaran.in">Shop</a>
+  <a class="m-link" href="#" data-pincheck>Check delivery area</a>
   <a class="m-link" href="contact.html">Contact</a>
   <div class="m-foot">
     <a href="https://play.google.com/store/apps/details?id=com.tecnavis.palkkaran" target="_blank" rel="noopener" class="btn btn-white">Download the app <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -59,6 +60,7 @@
       <div class="hero-actions fade-up d2">
         <a href="https://play.google.com/store/apps/details?id=com.tecnavis.palkkaran" target="_blank" rel="noopener" class="btn magnetic">Download the app <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
         <a href="#process" class="btn btn-ghost">See how it works</a>
+        <a href="#" class="btn btn-ghost" data-pincheck>📍 Check delivery area</a>
       </div>
       <div class="fade-up d3"><div class="store-row ">
   <a href="https://play.google.com/store/apps/details?id=com.tecnavis.palkkaran" target="_blank" rel="noopener" class="store" aria-label="Get it on Google Play"><svg viewBox="0 0 24 24"><path fill="#34A853" d="M3.6 2.2 13.4 12l-9.8 9.8c-.4-.2-.6-.7-.6-1.2V3.4c0-.5.2-1 .6-1.2Z"/><path fill="#FBBC04" d="m16.8 15.4-3.4-3.4 3.4-3.4 3.9 2.2c1.1.6 1.1 1.8 0 2.4l-3.9 2.2Z"/><path fill="#4285F4" d="M16.8 15.4 13.4 12l-9.8 9.8c.4.2.9.2 1.4-.1l11.8-6.3Z"/><path fill="#EA4335" d="M16.8 8.6 5 2.3c-.5-.3-1-.3-1.4-.1l9.8 9.8 3.4-3.4Z"/></svg><span><small>GET IT ON</small><strong>Google Play</strong></span></a>
@@ -78,59 +80,6 @@
   <svg class="w2" viewBox="0 0 2880 140" preserveAspectRatio="none"><path d="M0 95c240-40 480-40 720 0s480 40 720 0 480-40 720 0 480 40 720 0V140H0Z"/></svg>
 </div>
 </section>
-
-<!-- Delivery area check -->
-<section class="section" id="check-area" style="padding-top:10px;padding-bottom:30px">
-  <div class="container" style="max-width:760px">
-    <div class="pc-card">
-      <h2 class="pc-h">Do we deliver to you?</h2>
-      <p class="pc-p">Enter your pincode to check if Palkkaran delivers in your area.</p>
-      <form id="pcForm" class="pc-row" novalidate>
-        <input id="pcIn" type="tel" inputmode="numeric" maxlength="6" placeholder="6-digit pincode" aria-label="Pincode">
-        <button class="btn" type="submit" id="pcBtn">Check</button>
-      </form>
-      <div id="pcOut" role="status" aria-live="polite"></div>
-    </div>
-  </div>
-</section>
-<style>
-.pc-card{background:#fff;border-radius:24px;padding:28px;box-shadow:0 20px 50px -30px rgba(30,22,82,.45);border:1px solid rgba(30,22,82,.08);text-align:center}
-.pc-h{margin:0 0 6px}.pc-p{margin:0 0 16px;color:var(--muted)}
-.pc-row{display:flex;gap:10px;max-width:420px;margin:0 auto}.pc-row input{flex:1;min-width:0;padding:14px 18px;border-radius:999px;border:2px solid var(--lav-2,#e2ddff);font:inherit}
-.pc-row input:focus{outline:none;border-color:var(--violet)}
-#pcOut{margin-top:16px}.pc-ok,.pc-no{border-radius:16px;padding:14px 16px;text-align:left}
-.pc-ok{background:#dcfce7;color:#166534}.pc-no{background:#fee2e2;color:#7f1d1d}
-.pc-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}.pc-btns a{padding:9px 16px;border-radius:999px;font-weight:700;background:#fff;color:#1e1652;text-decoration:none;border:1px solid rgba(0,0,0,.08)}
-</style>
-<script>
-(function () {
-  var HOSTS = ['https://admin.palkkaran.in/api/v1', 'https://api.palkkaran.in/api/v1', 'https://palkkaran.in/api/v1'];
-  var out = document.getElementById('pcOut'), inp = document.getElementById('pcIn');
-  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
-  async function check(pin) {
-    for (var i = 0; i < HOSTS.length; i++) {
-      try { var r = await fetch(HOSTS[i] + '/serviceability?pincode=' + pin, { headers: { Accept: 'application/json' } }); if (r.ok) return await r.json(); } catch (e) {}
-    }
-    throw new Error('net');
-  }
-  document.getElementById('pcForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
-    var pin = inp.value.replace(/\D/g, '');
-    if (pin.length !== 6) { out.innerHTML = '<div class="pc-no">Please enter a valid 6-digit pincode.</div>'; return; }
-    var b = document.getElementById('pcBtn'); b.disabled = true; out.innerHTML = '';
-    try {
-      var d = await check(pin);
-      if (d.serviceable) {
-        out.innerHTML = '<div class="pc-ok"><b>Good news! We deliver to ' + esc(pin) + '</b>' + (d.places && d.places.length ? ' (' + d.places.map(esc).join(', ') + ')' : '') + '.<div class="pc-btns"><a href="https://shop.palkkaran.in">Order now</a><a href="contact.html">Contact us</a></div></div>';
-      } else {
-        out.innerHTML = '<div class="pc-no"><b>Service is not available right now at ' + esc(pin) + '.</b><br>We are expanding soon. Contact us and we will let you know when we reach your area.<div class="pc-btns"><a href="tel:+917994753798">Call +91 799 475 3798</a><a href="https://wa.me/917994753798" rel="noopener">WhatsApp</a><a href="contact.html">Contact form</a></div></div>';
-      }
-    } catch (err) { out.innerHTML = '<div class="pc-no">Could not check right now. Please try again or call +91 799 475 3798.</div>'; }
-    b.disabled = false;
-  });
-})();
-</script>
-
 <div class="marquee-wrap" aria-hidden="true"><div class="marquee"><div class="marquee-track"><span class="marquee-item">Daily quality check</span><span class="marquee-item">Farm fresh milk</span><span class="marquee-item">Delivered before 8:30 AM</span><span class="marquee-item">Eco-friendly packaging</span><span class="marquee-item">Live delivery tracking</span><span class="marquee-item">Easy subscriptions</span><span class="marquee-item">ശുദ്ധമായ പാൽ</span><span class="marquee-item">Fresh every morning</span><span class="marquee-item">ദിവസവും പുതിയ പാൽ</span><span class="marquee-item">Pure &amp; unprocessed</span><span class="marquee-item">കൃത്യസമയത്ത് വീട്ടുപടിക്കൽ</span><span class="marquee-item">Daily quality check</span><span class="marquee-item">Farm fresh milk</span><span class="marquee-item">Delivered before 8:30 AM</span><span class="marquee-item">Eco-friendly packaging</span><span class="marquee-item">Live delivery tracking</span><span class="marquee-item">Easy subscriptions</span><span class="marquee-item">ശുദ്ധമായ പാൽ</span><span class="marquee-item">Fresh every morning</span><span class="marquee-item">ദിവസവും പുതിയ പാൽ</span><span class="marquee-item">Pure &amp; unprocessed</span><span class="marquee-item">കൃത്യസമയത്ത് വീട്ടുപടിക്കൽ</span></div></div></div>
 
 <section class="section" id="features">
@@ -310,7 +259,7 @@
       </div>
       <div>
         <h4>Explore</h4>
-        <ul><li><a href="index.html">Home</a></li><li><a href="about.html">About Us</a></li><li><a href="index.html#process">How it works</a></li><li><a href="index.html#faq">FAQ</a></li><li><a href="https://shop.palkkaran.in">Shop</a></li><li><a href="contact.html">Contact</a></li></ul>
+        <ul><li><a href="index.html">Home</a></li><li><a href="#" data-pincheck>Check delivery area</a></li><li><a href="about.html">About Us</a></li><li><a href="index.html#process">How it works</a></li><li><a href="index.html#faq">FAQ</a></li><li><a href="https://shop.palkkaran.in">Shop</a></li><li><a href="contact.html">Contact</a></li></ul>
       </div>
       <div>
         <h4>Get in touch</h4>
@@ -331,5 +280,6 @@
 </footer>
 <a href="https://wa.me/917994753798?text=Hi%20Palkkaran!%20I%27d%20like%20to%20start%20daily%20milk%20delivery." target="_blank" rel="noopener" class="wa-float" aria-label="Chat with us on WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4ZM12 21.8c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8Zm8.4-18.2A11.8 11.8 0 0 0 1.7 17.9L0 24l6.3-1.7A11.8 11.8 0 0 0 24 12a11.7 11.7 0 0 0-3.6-8.4Z"/></svg></a>
 <script src="assets/js/main.js" defer></script>
+<script src="assets/js/pincode.js" defer></script>
 </body>
 </html>
